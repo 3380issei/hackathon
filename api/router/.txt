@@ -1,0 +1,2 @@
+routing
+urlとcontrollerを紐づける
