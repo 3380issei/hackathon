@@ -1,7 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"api/db"
+	"fmt"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	db, err := db.NewDB()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("DB connection successfully opened")
+	fmt.Println(db)
 }
