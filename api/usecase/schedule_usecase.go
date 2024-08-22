@@ -7,6 +7,7 @@ import (
 
 type ScheduleUsecase interface {
 	CreateSchedule(schedule model.Schedule) (model.Schedule, error)
+	DeleteScheduleByID(scheduleID int) error
 }
 
 type scheduleUsecase struct {
@@ -22,4 +23,11 @@ func (su *scheduleUsecase) CreateSchedule(schedule model.Schedule) (model.Schedu
 		return model.Schedule{}, err
 	}
 	return schedule, nil
+}
+
+func (su *scheduleUsecase) DeleteScheduleByID(scheduleID int) error {
+	if err := su.sr.DeleteScheduleByID(scheduleID); err != nil {
+		return err
+	}
+	return nil
 }

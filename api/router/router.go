@@ -15,6 +15,7 @@ func NewRouter(uc controller.UserController, sc controller.ScheduleController) *
 	scheduleGroup := r.Group("/schedules")
 	{
 		scheduleGroup.POST("", sc.CreateSchedule)
+		scheduleGroup.DELETE("/:id", sc.DeleteScheduleByID)
 	}
 
 	return r
