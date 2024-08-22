@@ -6,6 +6,7 @@ import (
 	"api/repository"
 	"api/router"
 	"api/usecase"
+	"os"
 )
 
 func main() {
@@ -23,5 +24,5 @@ func main() {
 	scheduleController := controller.NewScheduleController(scheduleUsecase)
 
 	router := router.NewRouter(userController, scheduleController)
-	router.Run(":8080")
+	router.Run(os.Getenv("API_ADDRESS"))
 }
