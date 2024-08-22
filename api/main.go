@@ -17,7 +17,11 @@ func main() {
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository)
 	userController := controller.NewUserController(userUsecase)
-	router := router.NewRouter(userController)
 
+	scheduleRepository := repository.NewScheduleRepository(db)
+	scheduleUsecase := usecase.NewScheduleUsecase(scheduleRepository)
+	scheduleController := controller.NewScheduleController(scheduleUsecase)
+
+	router := router.NewRouter(userController, scheduleController)
 	router.Run(":8080")
 }
