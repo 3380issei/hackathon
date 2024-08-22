@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"os"
 
 	"api/model"
 
@@ -10,12 +11,25 @@ import (
 )
 
 func NewDB() (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open("test"), &gorm.Config{})
+	var dsn string
+
+	env := os.Getenv("DB_ENV")
+	switch env {
+	case "test":
+		dsn = "test.db"
+	case "prod":
+		dsn = "prod.db"
+	default:
+		dsn = "dev.db"
+	}
+
+	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
 
 	db.AutoMigrate(&model.User{}, &model.Schedule{})
-	fmt.Println("DB connection successfully opened")
+	fmt.Println("DB connection successfully opened for", env, "environment")
+
 	return db, nil
 }
