@@ -10,3 +10,9 @@ type Schedule struct {
 	User      User      `json:"user" gorm:"foreignkey:UserID"`
 	UserID    int       `json:"user_id" gorm:"not null"`
 }
+
+type CurrentLocation struct {
+	Latitude    float64   `json:"latitude"`
+	Longitude   float64   `json:"longitude"`
+	CurrentTime time.Time `json:"current_time"`
+}

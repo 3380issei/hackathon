@@ -13,6 +13,7 @@ type ScheduleController interface {
 	CreateSchedule(c *gin.Context)
 	DeleteScheduleByID(c *gin.Context)
 	GetShedulesByUserID(c *gin.Context)
+	JudgeScheduleByID(c *gin.Context)
 }
 
 type scheduleController struct {
@@ -68,4 +69,31 @@ func (sc *scheduleController) GetShedulesByUserID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, schedules)
+}
+
+func (sc *scheduleController) JudgeScheduleByID(c *gin.Context) {
+	scheduleID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	schedule, err := sc.su.GetScheduleByID(scheduleID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var currentLocation model.CurrentLocation
+	if err := c.BindJSON(&currentLocation); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := sc.su.JudgeSchedule(schedule, currentLocation); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Schedule judged successfully"})
 }
