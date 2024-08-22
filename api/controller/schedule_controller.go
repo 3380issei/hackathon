@@ -12,6 +12,7 @@ import (
 type ScheduleController interface {
 	CreateSchedule(c *gin.Context)
 	DeleteScheduleByID(c *gin.Context)
+	GetShedulesByUserID(c *gin.Context)
 }
 
 type scheduleController struct {
@@ -51,4 +52,20 @@ func (sc *scheduleController) DeleteScheduleByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Schedule deleted successfully"})
+}
+
+func (sc *scheduleController) GetShedulesByUserID(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	schedules, err := sc.su.GetShedulesByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, schedules)
 }

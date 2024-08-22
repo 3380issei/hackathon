@@ -10,6 +10,7 @@ import (
 type ScheduleRepository interface {
 	CreateSchedule(schedule *model.Schedule) error
 	DeleteScheduleByID(scheduleID int) error
+	GetShedulesByUserID(userID int) ([]model.Schedule, error)
 }
 
 type scheduleRepository struct {
@@ -36,4 +37,12 @@ func (sr *scheduleRepository) DeleteScheduleByID(scheduleID int) error {
 		return errors.New("schedule not found")
 	}
 	return nil
+}
+
+func (sr *scheduleRepository) GetShedulesByUserID(userID int) ([]model.Schedule, error) {
+	var schedules []model.Schedule
+	if err := sr.db.Where("user_id = ?", userID).Find(&schedules).Error; err != nil {
+		return nil, err
+	}
+	return schedules, nil
 }
