@@ -23,12 +23,10 @@ export default function LoginPage() {
       if (response.ok) {
         const result = await response.json();
         console.log("Login successful:", result);
-        // ログイン成功後にダッシュボードなどのページにリダイレクト
-        router.push("/dashboard"); // 例: ダッシュボードページ
+        router.push("/mypage");
       } else {
         const error = await response.json();
         console.error("Login error:", error);
-        // エラーメッセージの表示などの処理を追加
       }
     } catch (error) {
       console.error("Network error:", error);
