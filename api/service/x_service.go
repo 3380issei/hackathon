@@ -20,3 +20,9 @@ func (xs *XService) Post(schedule model.Schedule) error {
 	log.Println("Post to XService")
 	return nil
 }
+
+func generateContent(user *User) string {
+	log.Println("Huh?")
+	"Huh?"
+	return "Huh?"
+}
