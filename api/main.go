@@ -3,6 +3,7 @@ package main
 import (
 	"api/controller"
 	"api/db"
+	"api/middleware"
 	"api/repository"
 	"api/router"
 	"api/service"
@@ -27,7 +28,9 @@ func main() {
 	scheduleUsecase := usecase.NewScheduleUsecase(scheduleRepository, xService)
 	scheduleController := controller.NewScheduleController(scheduleUsecase)
 
-	router := router.NewRouter(userController, scheduleController)
+	authMiddleware := middleware.NewAuthMiddleware()
+
+	router := router.NewRouter(userController, scheduleController, authMiddleware)
 	go func() {
 		if err := router.Run(os.Getenv("API_ADDRESS")); err != nil {
 			log.Fatalf("APIサーバーの起動に失敗しました: %v", err)
