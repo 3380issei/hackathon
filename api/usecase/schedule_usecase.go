@@ -5,6 +5,7 @@ import (
 	"api/repository"
 	"api/service"
 	"errors"
+	"fmt"
 	"math"
 )
 
@@ -14,6 +15,7 @@ type ScheduleUsecase interface {
 	GetScheduleByID(scheduleID int) (model.Schedule, error)
 	GetShedulesByUserID(userID int) ([]model.Schedule, error)
 	JudgeSchedule(schedule model.Schedule, currentLocation model.CurrentLocation) error
+	ExecuteExpiredSchedules() error
 }
 
 type scheduleUsecase struct {
@@ -106,4 +108,20 @@ func haversine(lat1, lon1, lat2, lon2 float64) float64 {
 
 	// 距離を計算
 	return R * c
+}
+
+func (su *scheduleUsecase) ExecuteExpiredSchedules() error {
+	schedules, err := su.sr.GetExpiredSchedules()
+	fmt.Println(schedules)
+	if err != nil {
+		return err
+	}
+
+	for _, schedule := range schedules {
+		if err := su.xs.Post(schedule); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

@@ -7,7 +7,9 @@ import (
 	"api/router"
 	"api/service"
 	"api/usecase"
+	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -26,5 +28,27 @@ func main() {
 	scheduleController := controller.NewScheduleController(scheduleUsecase)
 
 	router := router.NewRouter(userController, scheduleController)
-	router.Run(os.Getenv("API_ADDRESS"))
+	go func() {
+		if err := router.Run(os.Getenv("API_ADDRESS")); err != nil {
+			log.Fatalf("APIサーバーの起動に失敗しました: %v", err)
+		}
+	}()
+
+	go func() {
+		ticker := time.NewTicker(1 * time.Minute) // 1分ごとに実行
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ticker.C:
+				err := scheduleUsecase.ExecuteExpiredSchedules()
+				if err != nil {
+					log.Printf("定期処理でエラーが発生しました: %v", err)
+				}
+			}
+		}
+	}()
+
+	// メインスレッドをブロック
+	select {}
 }

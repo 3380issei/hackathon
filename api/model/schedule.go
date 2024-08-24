@@ -7,6 +7,7 @@ type Schedule struct {
 	Latitude  float64   `json:"latitude"`
 	Longitude float64   `json:"longitude"`
 	Deadline  time.Time `json:"deadline"`
+	Expired   bool      `json:"expired" default:"false"`
 	User      User      `json:"user" gorm:"foreignkey:UserID"`
 	UserID    int       `json:"user_id" gorm:"not null"`
 }

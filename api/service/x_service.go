@@ -1,6 +1,9 @@
 package service
 
-import "api/model"
+import (
+	"api/model"
+	"log"
+)
 
 type XService struct {
 }
@@ -14,6 +17,6 @@ type XServiceInterface interface {
 }
 
 func (xs *XService) Post(schedule model.Schedule) error {
-	// ここに処理を書く
+	log.Println("Post to XService")
 	return nil
 }
