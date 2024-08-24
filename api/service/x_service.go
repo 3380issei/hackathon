@@ -18,6 +18,5 @@ type XServiceInterface interface {
 
 func (xs *XService) Post(schedule model.Schedule) error {
 	log.Println("Post to XService")
-	test
 	return nil
 }
