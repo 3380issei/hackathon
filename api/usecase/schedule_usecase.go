@@ -3,6 +3,7 @@ package usecase
 import (
 	"api/model"
 	"api/repository"
+	"api/service"
 	"errors"
 	"math"
 )
@@ -17,10 +18,11 @@ type ScheduleUsecase interface {
 
 type scheduleUsecase struct {
 	sr repository.ScheduleRepository
+	xs service.XService
 }
 
-func NewScheduleUsecase(sr repository.ScheduleRepository) ScheduleUsecase {
-	return &scheduleUsecase{sr}
+func NewScheduleUsecase(sr repository.ScheduleRepository, xs service.XService) ScheduleUsecase {
+	return &scheduleUsecase{sr, xs}
 }
 
 func (su *scheduleUsecase) CreateSchedule(schedule model.Schedule) (model.Schedule, error) {
