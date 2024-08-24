@@ -3,6 +3,7 @@ package repository
 import (
 	"api/model"
 	"errors"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -12,6 +13,7 @@ type ScheduleRepository interface {
 	DeleteScheduleByID(scheduleID int) error
 	GetShedulesByUserID(userID int) ([]model.Schedule, error)
 	GetScheduleByID(scheduleID int) (model.Schedule, error)
+	GetExpiredSchedules() ([]model.Schedule, error)
 }
 
 type scheduleRepository struct {
@@ -54,4 +56,15 @@ func (sr *scheduleRepository) GetScheduleByID(scheduleID int) (model.Schedule, e
 		return model.Schedule{}, err
 	}
 	return schedule, nil
+}
+
+func (sr *scheduleRepository) GetExpiredSchedules() ([]model.Schedule, error) {
+	var expiredSchedules []model.Schedule
+
+	err := sr.db.Where("deadline < ?", time.Now()).Find(&expiredSchedules).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return expiredSchedules, nil
 }
