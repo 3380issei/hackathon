@@ -8,6 +8,7 @@ import (
 
 type UserRepository interface {
 	GetUserByEmail(user *model.User, email string) error
+	GetUserByID(user *model.User, id string) error
 	CreateUser(user *model.User) error
 }
 
@@ -28,6 +29,13 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 
 func (ur *userRepository) CreateUser(user *model.User) error {
 	if err := ur.db.Create(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (ur *userRepository) GetUserByID(user *model.User, id string) error {
+	if err := ur.db.Where("id = ?", id).First(user).Error; err != nil {
 		return err
 	}
 	return nil

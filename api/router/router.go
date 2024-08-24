@@ -14,6 +14,7 @@ func NewRouter(uc controller.UserController, sc controller.ScheduleController, a
 
 	r.POST("/signup", uc.Signup)
 	r.POST("/login", uc.Login)
+	r.GET("/users/:id", uc.GetUserByID)
 
 	scheduleGroup := r.Group("/schedules")
 	{
