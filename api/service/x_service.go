@@ -24,6 +24,5 @@ func (xs *XService) Post(schedule model.Schedule) error {
 func generateContent(user *User) string {
 	log.Println("Huh?")
 	"Huh?"
-	"Huh?"
 	return "Huh?"
 }
