@@ -7,6 +7,10 @@ import (
 )
 
 func TestPost(t *testing.T) {
+	user := model.User{
+		Name: "LAQ",
+	}
+
 	schedule := model.Schedule{
 		ID:          1,
 		Destination: "Tokyo",
@@ -18,7 +22,7 @@ func TestPost(t *testing.T) {
 	}
 
 	xService := NewXService()
-	err := xService.Post(schedule)
+	err := xService.Post(user, schedule)
 	if err != nil {
 		t.Errorf("Post() error = %v, want nil", err)
 	}
