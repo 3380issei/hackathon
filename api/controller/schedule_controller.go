@@ -11,6 +11,7 @@ import (
 
 type ScheduleController interface {
 	CreateSchedule(c *gin.Context)
+	GetSheduleByID(c *gin.Context)
 	DeleteScheduleByID(c *gin.Context)
 	GetShedulesByUserID(c *gin.Context)
 	JudgeScheduleByID(c *gin.Context)
@@ -38,6 +39,22 @@ func (sc *scheduleController) CreateSchedule(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, newSchedule)
+}
+
+func (sc *scheduleController) GetSheduleByID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	schedule, err := sc.su.GetScheduleByID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, schedule)
 }
 
 func (sc *scheduleController) DeleteScheduleByID(c *gin.Context) {
