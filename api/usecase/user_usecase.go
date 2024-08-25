@@ -13,6 +13,7 @@ import (
 type UserUsecase interface {
 	Signup(user model.User) (model.User, error)
 	Login(user model.User) (string, error)
+	GetUserByID(userID string) (model.User, error)
 }
 
 type userUsecase struct {
@@ -73,4 +74,13 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 type CustomClaimsExample struct {
 	UserID string `json:"user_id"`
 	jwt.StandardClaims
+}
+
+func (uu *userUsecase) GetUserByID(userID string) (model.User, error) {
+	user := model.User{}
+	if err := uu.ur.GetUserByID(&user, userID); err != nil {
+		return model.User{}, err
+	}
+
+	return user, nil
 }
