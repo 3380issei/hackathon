@@ -67,7 +67,7 @@ export default function LoginForm() {
                     className="p-2 border border-gray-300 rounded"
                 />
             </label>
-            <button type="submit" className="p-2 bg-blue-500 text-white rounded">
+            <button type="submit" className="p-2 bg-red-500 text-white rounded">
                 Login
             </button>
         </form>

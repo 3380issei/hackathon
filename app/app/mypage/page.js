@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ScheduleList from "../components/ScheduleList";
 import { fetchUserByID, getUserIDFromToken } from "../services/userService";
 import { fetchSchedulesByUserID } from "../services/scheduleService";
+import Header from "../components/Header";
 
 export default function MyPage() {
   const router = useRouter();
@@ -44,29 +45,30 @@ export default function MyPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      {user ? (
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-6">
-            {user.name}さんのマイページ
-          </h1>
-        </div>
-      ) : (
-        <p>ユーザー情報を取得中...</p>
-      )}
-
-      {schedules.length > 0 ? (
-        <ScheduleList schedules={schedules} />
-      ) : (
-        <p>スケジュールはありません</p>
-      )}
-
-      <button
-        onClick={handleCreateNew}
-        className="px-6 py-3 mt-4 bg-blue-600 text-white rounded-lg shadow-lg transition-transform transform hover:scale-105"
-      >
-        新規作成
-      </button>
-    </main>
+    <>
+      <Header />
+      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        {user ? (
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-6">
+              {user.name}さんのマイページ
+            </h1>
+          </div>
+        ) : (
+          <p>ユーザー情報を取得中...</p>
+        )}
+        {schedules.length > 0 ? (
+          <ScheduleList schedules={schedules} />
+        ) : (
+          <p>スケジュールはありません</p>
+        )}
+        <button
+          onClick={handleCreateNew}
+          className="px-6 py-3 mt-4 bg-red-600 text-white rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        >
+          新規作成
+        </button>
+      </main>
+    </>
   );
 }
